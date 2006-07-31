@@ -1,6 +1,6 @@
 package MonetDB::CLI;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 our @Modules = split /;/, $ENV{PERL_MONETDB_CLI_MODULES}
   || 'MonetDB::CLI::MapiLib;MonetDB::CLI::MapiXS;MonetDB::CLI::MapiPP';
@@ -11,7 +11,7 @@ sub connect
 
   eval "require( $_ )" and return $_->connect( @_ ) for @Modules;
 
-  die 'No MonetDB::CLI implementation found';
+  chomp $@; die "No MonetDB::CLI implementation found: $@";
 }
 
 __PACKAGE__;
